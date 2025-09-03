@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Supervisor Digital - INNOVATECH</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo_innovatech.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo-container">
+                <img src="{{ url_for('static', filename='logo_innovatech.png') }}" alt="INNOVATECH Logo" class="company-logo">
+            </div>
+            <h1>📋 Formulário de Requisitos</h1>
+            <p class="subtitle">Sistema de Supervisor Digital</p>
+            <p class="company-name">INNOVATECH</p>
+        </header>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="flash flash-{{ category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST" class="form" id="requisitosForm">
+            <div class="form-section">
+                <h2>🕐 Disponibilidade do Script</h2>
+                <p class="field-description">Você gostaria que o script fique disponível e rodando 24 horas por dia, ou apenas nos horários programados (manhã e tarde)?</p>
+                
+                <div class="radio-group">
+                    <label class="radio-label">
+                        <input type="radio" name="disponibilidade" value="24 horas por dia">
+                        <span class="radio-custom"></span>
+                        24 horas por dia
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="disponibilidade" value="Horários programados">
+                        <span class="radio-custom"></span>
+                        Horários programados (manhã e tarde)
+                    </label>
+                </div>
+
+                <div class="conditional-field" id="horariosField" style="display: none;">
+                    <label for="horarios">⏰ Horários Específicos:</label>
+                    <p class="field-description">Caso queira horários programados por você, responda essa pergunta:</p>
+                    <p class="context-info">Você tem um horário específico ou posso configurar para rodar às 10h e às 16h?</p>
+                    <input type="text" id="horarios" name="horarios" placeholder="Ex: 10h e 16h, ou seus horários específicos">
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2>📊 Registro de Operações</h2>
+                <p class="field-description">Você quer que o sistema registre tudo no banco de dados ou prefere usar logs locais?</p>
+                <p class="context-info">Isso vai me ajudar a entender se você quer que eu guarde todas as operações no banco de dados ou se eu posso simplesmente gerar arquivos de log locais, o que pode ser mais simples e agilizaria a entrega do projeto.</p>
+                <p class="context-example"><strong>Exemplo:</strong> Caso você queira no banco, eu posso registrar um log de cada operação (como quando um e-mail é enviado), mas se você preferir um arquivo de log, posso criar algo mais simples, como um arquivo .txt ou .log que ficaria dentro de uma pasta específica com os dados da operação (data, produto, ação e etc).</p>
+                
+                <div class="radio-group">
+                    <label class="radio-label">
+                        <input type="radio" name="registro" value="Banco de dados">
+                        <span class="radio-custom"></span>
+                        Banco de dados
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="registro" value="Logs locais">
+                        <span class="radio-custom"></span>
+                        Logs locais
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2>🖥️ Hospedagem e Execução</h2>
+                <p class="field-description">Onde o script deverá ser hospedado e executado?</p>
+                <p class="context-info">• Caso fique em um computador comum, ele precisará estar ligado o tempo todo para garantir o funcionamento correto.</p>
+                <p class="context-info">• Uma alternativa seria usar uma VPS (Servidor Virtual Privado), que é um servidor online disponível 24h por provedores de hospedagem. Isso garantiria que o script rode sem interrupções, mesmo que o computador local esteja desligado.</p>
+                
+                <div class="radio-group">
+                    <label class="radio-label">
+                        <input type="radio" name="hospedagem" value="Computador comum">
+                        <span class="radio-custom"></span>
+                        Computador comum
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="hospedagem" value="VPS (Servidor Virtual)">
+                        <span class="radio-custom"></span>
+                        VPS (Servidor Virtual)
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="hospedagem" value="Servidor dedicado">
+                        <span class="radio-custom"></span>
+                        Servidor dedicado
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="hospedagem" value="Cloud (AWS, Azure, etc.)">
+                        <span class="radio-custom"></span>
+                        Cloud (AWS, Azure, etc.)
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2>🗃️ Estrutura das Tabelas de Máquinas</h2>
+                <p class="field-description">Você pode me informar qual é a estrutura das tabelas de máquinas (mini PCs e impressoras)? Preciso saber como os dados estão organizados (ex: nome da tabela, tipos de dados nos campos, etc.).</p>
+                <p class="context-example"><strong>Exemplo:</strong> Suponhamos que a tabela de máquinas se chame maquinas e tenha os campos id, nome, tipo (mini_pc/impressora), quantidade_em_estoque, status, e data_criacao. Com essa informação, você vai poder montar consultas SQL e acessar esses dados corretamente.</p>
+                <textarea name="estrutura" placeholder="Descreva a estrutura das suas tabelas de máquinas, campos principais, relacionamentos, etc."></textarea>
+            </div>
+
+            <div class="form-section">
+                <h2>📉 Definição de Estoque Baixo</h2>
+                <p class="field-description">Em relação ao estoque baixo: existe um valor específico que define quando uma máquina está com estoque baixo, ou isso varia por tipo de máquina?</p>
+                <p class="context-info">Vai me ajudar a entender o critério que será usado para identificar um "estoque baixo". Pode ser um valor fixo (ex: menos de 10 unidades) ou algo que varie de acordo com o tipo de máquina (mini PC vs impressora).</p>
+                <textarea name="estoque" placeholder="Ex: Valor fixo (ex: 5 unidades), Varia por tipo de máquina, Percentual do estoque total, etc."></textarea>
+            </div>
+
+            <div class="form-section">
+                <h2>🆕 Identificação de Máquina Nova ou Usada</h2>
+                <p class="field-description">Como posso verificar se a máquina está marcada como 'nova' ou 'usada'? Existe um campo específico para isso no banco?</p>
+                <p class="context-info">Vai me ajudar a entender como identificar se uma máquina é "nova" ou "usada", por exemplo, em um campo como status, onde pode estar registrado como novo, usado, ou até recondicionado.</p>
+                <textarea name="produto_novo" placeholder="Ex: Campo 'status' com valores 'novo'/'usado', Campo 'condicao', Tabela separada, etc."></textarea>
+            </div>
+
+            <div class="form-section">
+                <h2>📧 Configuração de Envio de E-mails</h2>
+                <p class="field-description">Você tem uma conta de e-mail configurada para o envio? Caso contrário, qual serviço podemos usar? Eu preciso das credenciais ou da configuração SMTP</p>
+                <p class="context-info">Preciso garantir que eu tenha as credenciais necessárias para enviar os e-mails. Saber se você já tem uma conta configurada ou se você precisa configurar isso vai facilitar muito o processo de envio de e-mails de alerta.</p>
+                <p class="context-example"><strong>As credenciais são basicamente os dados de autenticação que o sistema vai usar para se conectar ao servidor de e-mail e enviar e-mails. Elas incluem:</strong></p>
+                <p class="context-info">• Endereço de e-mail.</p>
+                <p class="context-info">• Senha ou Token de Acesso.</p>
+                <p class="context-info">Essas credenciais são necessárias para que o script consiga fazer login na conta de e-mail e enviar e-mails de maneira automatizada.</p>
+                
+                <div class="radio-group">
+                    <label class="radio-label">
+                        <input type="radio" name="email_config" value="Já tenho conta configurada">
+                        <span class="radio-custom"></span>
+                        Já tenho conta configurada
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="email_config" value="Preciso configurar uma nova">
+                        <span class="radio-custom"></span>
+                        Preciso configurar uma nova
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2>👤 Supervisora Atual</h2>
+                <p class="field-description">Quem seria a supervisora atual que faz a supervisão humana das máquinas? Preciso de mais detalhes sobre as máquinas e suas prioridades (quantidade, usado ou novo e etc).</p>
+                <p class="context-info">Tenho em mente essas tópicos e perguntas para abordar em uma reunião com a supervisora:</p>
+                <p class="context-example"><strong>Sobre o Sistema de Supervisor Digital:</strong></p>
+                <p class="context-info">• "Qual é o objetivo principal do Sistema de Supervisor Digital que estou desenvolvendo?"</p>
+                <p class="context-info">• "Quais são as funcionalidades mais importantes que devo focar agora?"</p>
+                <p class="context-example"><strong>Sobre prioridades e desafios:</strong></p>
+                <p class="context-info">• "Quais são os maiores desafios ou obstáculos atuais na supervisão das máquinas?"</p>
+                <p class="context-info">• "O que precisa de mais atenção ou prioridade nesse momento?"</p>
+                <p class="context-example"><strong>Sobre comunicação e feedback:</strong></p>
+                <p class="context-info">• "Qual a frequência das reuniões ou check-ins sobre o progresso do sistema?"</p>
+                <p class="context-info">• "Como podemos garantir que estamos todos alinhados nas entregas do sistema?"</p>
+                <input type="text" name="responsavel" placeholder="Nome e contato da supervisora atual">
+            </div>
+
+            <div class="form-section">
+                <h2>💡 Perguntas Adicionais</h2>
+                <p class="field-description">Caso ache válida essa reunião, você tem alguma sugestão de outras perguntas que eu deveria fazer para a supervisora atual?</p>
+                <textarea name="perguntas_adicionais" placeholder="Sugira outras perguntas importantes que deveriam ser feitas na reunião com a supervisora..."></textarea>
+            </div>
+
+            <div class="form-section">
+                <h2>📋 Especificações do Projeto</h2>
+                <p class="field-description">Além disso, também gostaria de solicitar um documento bem específico do que você espera como resultado final e se possível sugestões de ferramentas.</p>
+                <p class="context-info">Também gostaria de saber se as ferramentas recomendadas por você são obrigatórias ou se posso chegar no resultado final de outra forma caso eu encontre alguma melhor ao decorrer do desenvolvimento do projeto. Favor dizer o que é realmente imprescindível para o projeto e o que é opcional ou de minha escolha (como o uso da IDE ambiente de desenvolvimento).</p>
+                <textarea name="especificacoes" placeholder="Descreva suas expectativas, ferramentas obrigatórias vs opcionais, e qualquer especificação importante..."></textarea>
+            </div>
+
+            <div class="form-section">
+                <h2>⚠️ Observações Importantes</h2>
+                <p class="field-description">Questionário com base no meu entendimento do que seria o projeto de acordo com nossa conversa e email enviado para mim. Caso eu tenha falado ou perguntado algo que diverge de sua ideia de projeto, favor informar aqui:</p>
+                <textarea name="observacoes" placeholder="Informe qualquer divergência ou correção necessária sobre o entendimento do projeto..."></textarea>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-submit">
+                    <span>📤 Enviar Formulário</span>
+                </button>
+                <button type="reset" class="btn-reset">
+                    <span>🔄 Limpar Formulário</span>
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmação - Sistema de Supervisor Digital</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo_innovatech.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .confirmation-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .confirmation-header {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        
+        .confirmation-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .confirmation-content {
+            padding: 40px 30px;
+        }
+        
+        .email-preview {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            min-width: 180px;
+            justify-content: center;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+        }
+        
+        .btn-secondary {
+            background: #f3f4f6;
+            color: #6b7280;
+            border: 2px solid #e5e7eb;
+        }
+        
+        .btn-secondary:hover {
+            background: #e5e7eb;
+            color: #374151;
+            transform: translateY(-2px);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+        }
+        
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+        }
+        
+        .instructions {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 20px;
+            border-radius: 0 8px 8px 0;
+            margin: 20px 0;
+        }
+        
+        .instructions h3 {
+            color: #92400e;
+            margin-bottom: 10px;
+        }
+        
+        .instructions p {
+            color: #78350f;
+            margin-bottom: 8px;
+        }
+        
+        .copy-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #10b981;
+            color: white;
+            padding: 12px 18px;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            z-index: 1000;
+            display: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            max-width: 300px;
+            animation: slideInRight 0.3s ease;
+        }
+        
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .confirmation-header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="confirmation-container">
+        <div class="confirmation-header">
+            <h1>✅ Formulário Coletado com Sucesso!</h1>
+            <p>Obrigado por preencher o formulário! Agora você precisa enviar as respostas por email.</p>
+        </div>
+        
+        <div class="confirmation-content">
+            <div class="instructions">
+                <h3>📧 Como enviar suas respostas:</h3>
+                <p><strong>Este formulário foi criado apenas para coletar informações de forma rápida e fácil, então não foi elaborado para envio automático.</strong></p>
+                <p><strong>Escolha uma das opções abaixo:</strong></p>
+                <p><strong>Opção 1 (Recomendada):</strong> Clique em "Abrir Outlook Web" - abre o Outlook em nova aba e copia o texto automaticamente</p>
+                <p><strong>Opção 2:</strong> Clique em "Copiar Texto" e cole em qualquer cliente de email</p>
+                <p><strong>Destinatário:</strong> alvaro.hora@inoveagora.com.br</p>
+                <p><strong>Assunto:</strong> Formulário de Requisitos Preenchido para o Software de Supervisor Digital</p>
+            </div>
+            
+            <h3>📋 Conteúdo do Email:</h3>
+            <div class="email-preview" id="emailContent">{{ email_body }}</div>
+            
+            <div class="action-buttons">
+                <button class="btn btn-primary" onclick="openOutlookAndCopy()" id="outlookBtn">
+                    📋 Copiar + 📧 Abrir Outlook
+                </button>
+                <button class="btn btn-secondary" onclick="copyToClipboard()" id="copyBtn">
+                    📋 Copiar Texto
+                </button>
+                <a href="/" class="btn btn-success">
+                    🔄 Novo Formulário
+                </a>
+            </div>
+            
+            <div style="text-align: center; margin: 20px 0;">
+                <p style="color: #6b7280; font-size: 0.9rem;">
+                    <strong>Dica:</strong> Use o botão "Abrir Outlook Web" para facilitar o envio
+                </p>
+                <p style="color: #6b7280; font-size: 0.8rem; margin-top: 10px;">
+                    <strong>Email:</strong> alvaro.hora@inoveagora.com.br | 
+                    <strong>Assunto:</strong> Formulário de Requisitos Preenchido para o Software de Supervisor Digital
+                </p>
+            </div>
+            
+            <div style="text-align: center; margin-top: 30px; color: #6b7280;">
+                <p><strong>Importante:</strong> Este formulário foi criado apenas para coletar informações de forma rápida e fácil, então não foi elaborado para envio automático.</p>
+                <p><strong>Email para envio:</strong> alvaro.hora@inoveagora.com.br</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="copy-notification" id="copyNotification">
+        ✅ Texto copiado para a área de transferência!
+    </div>
+    
+    <script>
+        function copyToClipboard() {
+            const emailContent = document.getElementById('emailContent').textContent;
+            
+            
+            const tempTextArea = document.createElement('textarea');
+            tempTextArea.value = emailContent;
+            document.body.appendChild(tempTextArea);
+            tempTextArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempTextArea);
+            
+            
+            const notification = document.getElementById('copyNotification');
+            notification.style.display = 'block';
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+            
+            
+            const copyBtn = document.getElementById('copyBtn');
+            const originalText = copyBtn.innerHTML;
+            copyBtn.innerHTML = '✅ Copiado!';
+            copyBtn.style.background = '#10b981';
+            setTimeout(() => {
+                copyBtn.innerHTML = originalText;
+                copyBtn.style.background = '';
+            }, 2000);
+        }
+        
+        
+        function openOutlookAndCopy() {
+            
+            const emailContent = document.getElementById('emailContent').textContent;
+            const tempTextArea = document.createElement('textarea');
+            tempTextArea.value = emailContent;
+            document.body.appendChild(tempTextArea);
+            tempTextArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempTextArea);
+            
+            
+            alert('✅ Respostas copiadas! Agora cole e envie o email.');
+            
+            
+            const outlookUrl = 'https://outlook.live.com/mail/0/deeplink/compose?to=alvaro.hora@inoveagora.com.br&subject=Formul%C3%A1rio%20de%20Requisitos%20Preenchido%20para%20o%20Software%20de%20Supervisor%20Digital';
+            window.open(outlookUrl, '_blank');
+        }
+
+    </script>
+</body>
+</html>
